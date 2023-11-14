@@ -2,7 +2,7 @@ package org.informatorio.db;
 
 import org.informatorio.domain.Banco;
 
-public class db {
+public class DB {
     public static Banco banco;
 
     public static Banco getBanco() {

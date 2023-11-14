@@ -73,4 +73,8 @@ public class Cliente {
     public static void registrarme() {
         new ClienteService().registrarme();
     }
+
+    public static void iniciarSesion() {
+        new ClienteService().iniciarSesion();
+    }
 }

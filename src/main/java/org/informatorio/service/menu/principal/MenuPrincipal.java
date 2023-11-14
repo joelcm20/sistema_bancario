@@ -1,10 +1,8 @@
 package org.informatorio.service.menu.principal;
 
-import org.informatorio.db.db;
-import org.informatorio.domain.Banco;
+import org.informatorio.db.DB;
 import org.informatorio.domain.Cliente;
 import org.informatorio.entrada.InputConsoleService;
-import org.informatorio.service.menu.principal.IMenuPrincipal;
 
 public class MenuPrincipal implements IMenuPrincipal {
 
@@ -31,7 +29,7 @@ public class MenuPrincipal implements IMenuPrincipal {
     @Override
     public void mostrarMenu() {
         StringBuilder menu = new StringBuilder();
-        menu.append(String.format("========== %s ==========\n", db.getBanco().getNombre()));
+        menu.append(String.format("========== %s ==========\n", DB.getBanco().getNombre()));
         menu.append("1. Registrarse.\n");
         menu.append("2. Iniciar sesion.\n");
         menu.append("0. Salir.\n");
@@ -44,6 +42,9 @@ public class MenuPrincipal implements IMenuPrincipal {
         switch (opcion) {
             case 1:
                 Cliente.registrarme();
+                break;
+            case 2:
+                Cliente.iniciarSesion();
                 break;
             case 0:
                 System.out.println("Adios.\n");

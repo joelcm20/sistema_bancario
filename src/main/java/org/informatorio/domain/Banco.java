@@ -7,6 +7,8 @@ public class Banco {
     private String nombre;
     private List<Cliente> clientes = new ArrayList<>();
 
+    private Cliente clienteConectado;
+
     public String getNombre() {
         return nombre;
     }
@@ -21,6 +23,14 @@ public class Banco {
 
     public void setClientes(List<Cliente> clientes) {
         this.clientes = clientes;
+    }
+
+    public Cliente getClienteConectado() {
+        return clienteConectado;
+    }
+
+    public void setClienteConectado(Cliente clienteConectado) {
+        this.clienteConectado = clienteConectado;
     }
 
     public Banco(String nombre) {
