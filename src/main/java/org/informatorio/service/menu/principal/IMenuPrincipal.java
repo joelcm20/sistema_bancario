@@ -1,9 +1,11 @@
 package org.informatorio.service.menu.principal;
 
 public interface IMenuPrincipal {
-    void mostrarMenu();
-
     Boolean iniciar();
 
-    void realizarTarea(int opcion);
+    void mostrarMenu();
+
+    void menuPrincipal();
+
+    void realizarTareaMenuPrincipal(int opcion);
 }
