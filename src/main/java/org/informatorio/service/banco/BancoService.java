@@ -20,4 +20,14 @@ public class BancoService implements IBancoService {
         }
         return Optional.empty();
     }
+
+    @Override
+    public Boolean usuarioYaRegistrado(String usuario) {
+        for (Cliente c : DB.getBanco().getClientes()) {
+            if (c.getUsuario().equals(usuario)) {
+                return Boolean.TRUE;
+            }
+        }
+        return Boolean.FALSE;
+    }
 }

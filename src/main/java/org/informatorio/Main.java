@@ -7,7 +7,9 @@ import org.informatorio.service.menu.principal.MenuPrincipal;
 
 public class Main {
     public static void main(String[] args) {
+        // crear banco
         Banco banco = new Banco("BanCoopProspera");
+        // gardar el banco en la db
         DB.setBanco(banco);
 
         Boolean seguir; // seguir en la aplicacion

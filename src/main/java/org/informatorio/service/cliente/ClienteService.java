@@ -20,8 +20,18 @@ public class ClienteService implements IClienteService {
         cliente.setNombre(InputConsoleService.getScanner().nextLine());
 
         // crear nombre de usuario
-        System.out.print("- Nombre de usuario: ");
-        cliente.setUsuario(InputConsoleService.getScanner().nextLine());
+        ok = Boolean.FALSE;
+        do {
+            System.out.print("- Nombre de usuario: ");
+            cliente.setUsuario(InputConsoleService.getScanner().nextLine());
+            // validar si el usuario ya existe
+            if (new BancoService().usuarioYaRegistrado(cliente.getUsuario())) {
+                System.out.println("Error: el usuario ya exixte. Elige otro.");
+                ok = Boolean.TRUE;
+            } else {
+                ok = Boolean.FALSE;
+            }
+        } while (ok);
 
         // crear contraseña
         ok = Boolean.FALSE;

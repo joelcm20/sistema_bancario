@@ -8,4 +8,6 @@ public interface IBancoService {
     void registrarCliente(Cliente cliente);
 
     Optional<Cliente> buscarClientePorCredenciales(String usuario, String contrasena);
+
+    Boolean usuarioYaRegistrado(String usuario);
 }

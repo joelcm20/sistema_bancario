@@ -19,9 +19,8 @@ public class MenuPrincipal implements IMenuPrincipal {
                 mostrarMenu();
                 System.out.print("Elegir opcion: ");
                 opcion = Integer.parseInt(InputConsoleService.getScanner().nextLine());
-                // desde aca todo ok, el usuario ingreso un formato correcto
+                // realizar tarea
                 ok = Boolean.FALSE;
-
                 if (Objects.isNull(DB.getBanco().getClienteConectado())) {
                     this.realizarTareaMenuPrincipal(opcion);
                 } else {
