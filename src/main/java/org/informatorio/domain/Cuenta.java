@@ -4,8 +4,9 @@ import java.util.UUID;
 
 public abstract class Cuenta {
     private UUID id = UUID.randomUUID();
-    private int numeroCuenta;
+    private long numeroCuenta;
     private Cliente titular;
+    private String alias;
     private double saldo;
 
     public void depositarSaldo(double monto) {
@@ -28,11 +29,11 @@ public abstract class Cuenta {
         this.id = id;
     }
 
-    public int getNumeroCuenta() {
+    public long getNumeroCuenta() {
         return numeroCuenta;
     }
 
-    public void setNumeroCuenta(int numeroCuenta) {
+    public void setNumeroCuenta(long numeroCuenta) {
         this.numeroCuenta = numeroCuenta;
     }
 
@@ -42,6 +43,14 @@ public abstract class Cuenta {
 
     public void setTitular(Cliente titular) {
         this.titular = titular;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
     public double getSaldo() {

@@ -1,15 +1,9 @@
 package org.informatorio.service.menu.sesion;
 
-public interface IMenuSesion {
+public interface IMenuSesionService {
     void menuSesion();
 
     void realizarTareaMenuSesion(int opcion);
-
-    void depositarSaldo();
-
-    void retirarSaldo();
-
-    void consultarSaldo();
 
     void cerrarSesion();
 }

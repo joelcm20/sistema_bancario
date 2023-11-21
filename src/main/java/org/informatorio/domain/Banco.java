@@ -1,5 +1,7 @@
 package org.informatorio.domain;
 
+import org.informatorio.db.DB;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,18 +43,6 @@ public class Banco {
         this.clientes.add(cliente);
     }
 
-    public void abrirCuenta(Cuenta cuenta) {
-        boolean clienteExiste = Boolean.FALSE;
-        for (Cliente c : this.getClientes()) {
-            if (c.equals(cuenta.getTitular())) {
-                clienteExiste = Boolean.TRUE;
-                break;
-            }
-        }
-        if (!clienteExiste) {
-            System.out.println("Error al abrir cuenta, cliente no encontrado.");
-            return;
-        }
-        cuenta.getTitular().agregarCuenta(cuenta);
+    public void abrirCuenta() {
     }
 }

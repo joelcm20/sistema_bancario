@@ -1,6 +1,6 @@
 package org.informatorio.service.menu.principal;
 
-public interface IMenuPrincipal {
+public interface IMenuPrincipalService {
     Boolean iniciar();
 
     void mostrarMenu();

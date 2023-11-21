@@ -3,12 +3,11 @@ package org.informatorio.service.menu.principal;
 import org.informatorio.db.DB;
 import org.informatorio.domain.Cliente;
 import org.informatorio.entrada.InputConsoleService;
-import org.informatorio.service.menu.sesion.MenuSesion;
+import org.informatorio.service.menu.sesion.MenuSesionService;
 
 import java.util.Objects;
-import java.util.Optional;
 
-public class MenuPrincipal implements IMenuPrincipal {
+public class MenuPrincipalService implements IMenuPrincipalService {
 
     @Override
     public Boolean iniciar() {
@@ -24,7 +23,7 @@ public class MenuPrincipal implements IMenuPrincipal {
                 if (Objects.isNull(DB.getBanco().getClienteConectado())) {
                     this.realizarTareaMenuPrincipal(opcion);
                 } else {
-                    new MenuSesion().realizarTareaMenuSesion(opcion);
+                    new MenuSesionService().realizarTareaMenuSesion(opcion);
                 }
             } catch (NumberFormatException e) {
                 ok = Boolean.TRUE;
@@ -40,7 +39,7 @@ public class MenuPrincipal implements IMenuPrincipal {
         if (Objects.isNull(clienteConectado)) {
             this.menuPrincipal();
         } else {
-            new MenuSesion().menuSesion();
+            new MenuSesionService().menuSesion();
         }
     }
 

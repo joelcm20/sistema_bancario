@@ -2,6 +2,7 @@ package org.informatorio.service.banco;
 
 import org.informatorio.db.DB;
 import org.informatorio.domain.Cliente;
+import org.informatorio.domain.Cuenta;
 
 import java.util.Optional;
 
@@ -29,5 +30,19 @@ public class BancoService implements IBancoService {
             }
         }
         return Boolean.FALSE;
+    }
+
+    @Override
+    public void validarCuenta(Cuenta cuenta) {
+        boolean clienteExiste = Boolean.FALSE;
+        for (Cliente c : DB.getBanco().getClientes()) {
+            if (c.equals(cuenta.getTitular())) {
+                clienteExiste = Boolean.TRUE;
+                break;
+            }
+        }
+        if (!clienteExiste) {
+            System.out.println("Error al abrir cuenta, cliente no encontrado.");
+        }
     }
 }

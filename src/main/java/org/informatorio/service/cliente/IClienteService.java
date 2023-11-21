@@ -4,4 +4,6 @@ public interface IClienteService {
     void registrarme();
 
     void iniciarSesion();
+
+    void agregarCuenta();
 }

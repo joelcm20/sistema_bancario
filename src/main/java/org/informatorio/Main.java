@@ -3,7 +3,7 @@ package org.informatorio;
 import org.informatorio.db.DB;
 import org.informatorio.domain.Banco;
 import org.informatorio.entrada.InputConsoleService;
-import org.informatorio.service.menu.principal.MenuPrincipal;
+import org.informatorio.service.menu.principal.MenuPrincipalService;
 
 public class Main {
     public static void main(String[] args) {
@@ -14,7 +14,7 @@ public class Main {
 
         Boolean seguir; // seguir en la aplicacion
         do {
-            seguir = new MenuPrincipal().iniciar();
+            seguir = new MenuPrincipalService().iniciar();
         } while (seguir);
 
         InputConsoleService.closeScanner();

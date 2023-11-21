@@ -62,8 +62,12 @@ public class Cliente {
         this.cuentas = cuentas;
     }
 
-    public void agregarCuenta(Cuenta cuenta) {
-        this.getCuentas().add(cuenta);
+    public void setCuenta(Cuenta cuenta) {
+        this.cuentas.add(cuenta);
+    }
+
+    public void agregarCuenta() {
+        new ClienteService().agregarCuenta();
     }
 
     public void eliminarCuenta(UUID idCuenta) {

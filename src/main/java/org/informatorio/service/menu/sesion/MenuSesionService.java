@@ -3,7 +3,7 @@ package org.informatorio.service.menu.sesion;
 import org.informatorio.db.DB;
 import org.informatorio.domain.Cliente;
 
-public class MenuSesion implements IMenuSesion {
+public class MenuSesionService implements IMenuSesionService {
     @Override
     public void menuSesion() {
         StringBuilder menu = new StringBuilder();
@@ -11,8 +11,8 @@ public class MenuSesion implements IMenuSesion {
         menu.append("1. Depositar saldo.\n");
         menu.append("2. Retirar saldo.\n");
         menu.append("3. Consultar saldo.\n");
-        menu.append("4. Cerrar sesion.\n");
-        menu.append("0. Salir.\n");
+        menu.append("4. Agregar cuenta.\n");
+        menu.append("0. Cerrar sesion.\n");
         menu.append("=".repeat(35 + DB.getBanco().getClienteConectado().getUsuario().length()) + "\n");
         System.out.print(menu);
     }
@@ -24,28 +24,14 @@ public class MenuSesion implements IMenuSesion {
                 System.out.println("Depositando dinero...\n");
                 break;
             case 4:
-                this.cerrarSesion();
+                new Cliente().agregarCuenta();
                 break;
             case 0:
-                System.out.println("Adios.\n");
+                this.cerrarSesion();
+                break;
             default:
                 System.out.println("Opcion invalida.\n");
         }
-    }
-
-    @Override
-    public void depositarSaldo() {
-
-    }
-
-    @Override
-    public void retirarSaldo() {
-
-    }
-
-    @Override
-    public void consultarSaldo() {
-
     }
 
     @Override
