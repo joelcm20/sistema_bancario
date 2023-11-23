@@ -11,8 +11,9 @@ public class MenuPrincipalService implements IMenuPrincipalService {
 
     @Override
     public Boolean iniciar() {
-        int opcion = 0;
+        int opcion = -1;
         Boolean ok;
+        int seguir = -1;
         do {
             try {
                 mostrarMenu();
