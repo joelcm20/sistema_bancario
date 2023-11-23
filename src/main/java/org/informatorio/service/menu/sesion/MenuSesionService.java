@@ -25,6 +25,12 @@ public class MenuSesionService implements IMenuSesionService {
             case 1:
                 new Cliente().depositarSaldo();
                 break;
+            case 2:
+                new Cliente().retirarSaldo();
+                break;
+            case 3:
+                new Cliente().consultarSaldo();
+                break;
             case 4:
                 new Cliente().agregarCuenta();
                 break;

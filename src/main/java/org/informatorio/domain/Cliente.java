@@ -86,4 +86,12 @@ public class Cliente {
     public void depositarSaldo() {
         new CuentaService().depositarSaldo();
     }
+
+    public void consultarSaldo() {
+        new CuentaService().consultarSaldo();
+    }
+
+    public void retirarSaldo() {
+        new CuentaService().retirarSaldo();
+    }
 }
