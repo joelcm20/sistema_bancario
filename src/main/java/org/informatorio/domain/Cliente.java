@@ -1,6 +1,7 @@
 package org.informatorio.domain;
 
 import org.informatorio.service.cliente.ClienteService;
+import org.informatorio.service.cuenta.CuentaService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,5 +81,9 @@ public class Cliente {
 
     public static void iniciarSesion() {
         new ClienteService().iniciarSesion();
+    }
+
+    public void depositarSaldo() {
+        new CuentaService().depositarSaldo();
     }
 }

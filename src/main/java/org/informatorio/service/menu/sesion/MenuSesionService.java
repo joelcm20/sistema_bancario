@@ -23,7 +23,7 @@ public class MenuSesionService implements IMenuSesionService {
     public void realizarTareaMenuSesion(int opcion) {
         switch (opcion) {
             case 1:
-                System.out.println("Depositando dinero...\n");
+                new Cliente().depositarSaldo();
                 break;
             case 4:
                 new Cliente().agregarCuenta();
