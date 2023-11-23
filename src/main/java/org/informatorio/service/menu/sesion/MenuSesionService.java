@@ -13,7 +13,8 @@ public class MenuSesionService implements IMenuSesionService {
         menu.append("2. Retirar saldo.\n");
         menu.append("3. Consultar saldo.\n");
         menu.append("4. Agregar cuenta.\n");
-        menu.append("5. Cerrar sesion.\n");
+        menu.append("5. Eliminar cuenta.\n");
+        menu.append("6. Cerrar sesion.\n");
         menu.append("0. Salir.\n");
         menu.append("=".repeat(35 + DB.getBanco().getClienteConectado().getUsuario().length()) + "\n");
         System.out.print(menu);
@@ -35,6 +36,9 @@ public class MenuSesionService implements IMenuSesionService {
                 new Cliente().agregarCuenta();
                 break;
             case 5:
+                new Cliente().eliminarCuenta();
+                break;
+            case 6:
                 this.cerrarSesion();
                 break;
             case 0:

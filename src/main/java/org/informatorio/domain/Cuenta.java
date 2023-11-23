@@ -61,5 +61,6 @@ public abstract class Cuenta {
         this.saldo = saldo;
     }
 
-
+    public Cuenta() {
+    }
 }

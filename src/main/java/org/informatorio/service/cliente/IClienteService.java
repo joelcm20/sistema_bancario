@@ -6,4 +6,6 @@ public interface IClienteService {
     void iniciarSesion();
 
     void agregarCuenta();
+
+    void eliminarCuenta();
 }

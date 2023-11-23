@@ -8,6 +8,9 @@ import org.informatorio.service.cuenta.CuentaService;
 import org.informatorio.service.cuenta.ICuentaService;
 import org.informatorio.utils.GenerarNumeroCuenta;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class ClienteService implements IClienteService {
@@ -166,5 +169,38 @@ public class ClienteService implements IClienteService {
                 System.out.println("Cuenta creada correctamente.\n");
             }
         } while (ok);
+    }
+
+    @Override
+    public void eliminarCuenta() {
+        Cuenta cuentaAEliminar = null;
+        // obtener alias de la cuenta a eliminar
+        System.out.print("Alias de la cienta a eliminar: ");
+        String alias = InputConsoleService.getScanner().nextLine().trim();
+
+        // verificar si la cuenta existe
+        Boolean existeCuenta = Boolean.FALSE;
+        for (Cuenta c : DB.getBanco().getClienteConectado().getCuentas()) {
+            if (alias.equals(c.getAlias())) {
+                existeCuenta = Boolean.TRUE;
+                cuentaAEliminar = c;
+            }
+        }
+
+        // mostrar por pantalla si la cuenta a eliminar no existe
+        if (Objects.isNull(cuentaAEliminar)) {
+            System.out.println("Error: la cuenta no existe o no fue encontrada.\n");
+        } else {
+            // eliminar la cuenta si existe
+            List<Cuenta> nuevaListaCuentas = new ArrayList<>();
+            for (Cuenta c : DB.getBanco().getClienteConectado().getCuentas()) {
+                if (!c.getAlias().equals(cuentaAEliminar.getAlias())) {
+                    nuevaListaCuentas.add(c);
+                }
+            }
+            // guardar la nueva lista de cuentas al cliente conectado
+            DB.getBanco().getClienteConectado().setCuentas(nuevaListaCuentas);
+            System.out.println("Cuenta eliminada.\n");
+        }
     }
 }

@@ -71,8 +71,8 @@ public class Cliente {
         new ClienteService().agregarCuenta();
     }
 
-    public void eliminarCuenta(UUID idCuenta) {
-
+    public void eliminarCuenta() {
+        new ClienteService().eliminarCuenta();
     }
 
     public static void registrarme() {
