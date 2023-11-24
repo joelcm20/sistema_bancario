@@ -1,10 +1,12 @@
 package org.informatorio.domain;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 public abstract class Cuenta {
     private UUID id = UUID.randomUUID();
     private long numeroCuenta;
+    private LocalDate fechaApertura = LocalDate.now();
     private Cliente titular;
     private String alias;
     private double saldo;
@@ -35,6 +37,14 @@ public abstract class Cuenta {
 
     public void setNumeroCuenta(long numeroCuenta) {
         this.numeroCuenta = numeroCuenta;
+    }
+
+    public LocalDate getFechaApertura() {
+        return fechaApertura;
+    }
+
+    public void setFechaApertura(LocalDate fechaApertura) {
+        this.fechaApertura = fechaApertura;
     }
 
     public Cliente getTitular() {

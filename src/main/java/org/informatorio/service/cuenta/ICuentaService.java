@@ -23,4 +23,6 @@ public interface ICuentaService {
         }
         return esValido;
     }
+
+    void calcularTNA();
 }

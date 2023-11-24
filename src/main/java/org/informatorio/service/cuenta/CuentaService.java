@@ -4,8 +4,12 @@ import com.sun.jdi.IntegerType;
 import org.informatorio.db.DB;
 import org.informatorio.domain.Cliente;
 import org.informatorio.domain.Cuenta;
+import org.informatorio.domain.CuentaAhorro;
+import org.informatorio.domain.CuentaCorriente;
 import org.informatorio.entrada.InputConsoleService;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class CuentaService implements ICuentaService {
@@ -60,8 +64,28 @@ public class CuentaService implements ICuentaService {
             // realizar la tarea si existe la cuenta
             System.out.print("Monto a retirar: ");
             double monto = Double.parseDouble(InputConsoleService.getScanner().nextLine());
-            cuentaARetirarSaldo.retirarSaldo(monto);
-            System.out.println("Monto retirado.\n");
+
+            // tener en cuenta el sobregiro si la cueta es corriente
+            if (cuentaARetirarSaldo instanceof CuentaCorriente) {
+                // mostrar por pantalla si se llego al limite de sobregiro
+                if (cuentaARetirarSaldo.getSaldo() - monto < ((CuentaCorriente) cuentaARetirarSaldo).getSobregiro()) {
+                    System.out.println("Error: sobregiro excedido.\n");
+                } else {
+                    // si todo esta bien, remirar el monto
+                    cuentaARetirarSaldo.retirarSaldo(monto);
+                    System.out.println("Monto retirado.\n");
+                }
+            } else {
+                // si la cuenta es de ahorro
+                if (cuentaARetirarSaldo.getSaldo() - monto >= 0) {
+                    cuentaARetirarSaldo.retirarSaldo(monto);
+                    System.out.println("Monto retirado.\n");
+                } else {
+                    // mostrar por pantalla si el saldo es insuficiente
+                    System.out.println("Saldo insuficiente.\n");
+                }
+
+            }
         }
     }
 
@@ -112,6 +136,32 @@ public class CuentaService implements ICuentaService {
             }
         } else {
             System.out.println("Error: opcion invalida.\n");
+        }
+    }
+
+    @Override
+    public void calcularTNA() {
+        CuentaAhorro cuenta = null;
+        // obtener cuenta a calcular tna
+        System.out.print("Alias de la cuenta: ");
+        String alias = InputConsoleService.getScanner().nextLine();
+
+        // buscar cuenta con el alias
+        for (Cuenta c : DB.getBanco().getClienteConectado().getCuentas()) {
+            if (alias.equals(c.getAlias()) && c instanceof CuentaAhorro) {
+                cuenta = (CuentaAhorro) c;
+            }
+        }
+
+        if (Objects.isNull(cuenta)) {
+            System.out.println("Error: la cuenta no existe o no fue encontrada.\n");
+        } else {
+            double tasaDiaria = cuenta.getTNA() / 365;
+            long diasTranscurridos = ChronoUnit.DAYS.between(cuenta.getFechaApertura(), LocalDate.now());
+
+            double saldoFinal = cuenta.getSaldo() * Math.pow(1 + tasaDiaria, diasTranscurridos);
+            double interesesGenerados = saldoFinal - cuenta.getSaldo();
+            System.out.printf("Intereses generados %s.\n\n", interesesGenerados);
         }
     }
 }

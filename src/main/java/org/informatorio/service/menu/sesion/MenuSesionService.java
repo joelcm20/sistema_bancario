@@ -2,6 +2,8 @@ package org.informatorio.service.menu.sesion;
 
 import org.informatorio.db.DB;
 import org.informatorio.domain.Cliente;
+import org.informatorio.domain.Cuenta;
+import org.informatorio.domain.CuentaAhorro;
 import org.informatorio.service.menu.principal.MenuPrincipalService;
 
 public class MenuSesionService implements IMenuSesionService {
@@ -14,7 +16,8 @@ public class MenuSesionService implements IMenuSesionService {
         menu.append("3. Consultar saldo.\n");
         menu.append("4. Agregar cuenta.\n");
         menu.append("5. Eliminar cuenta.\n");
-        menu.append("6. Cerrar sesion.\n");
+        menu.append("6. Calcular TNA(solo cuentas de ahorro).\n");
+        menu.append("7. Cerrar sesion.\n");
         menu.append("0. Salir.\n");
         menu.append("=".repeat(35 + DB.getBanco().getClienteConectado().getUsuario().length()) + "\n");
         System.out.print(menu);
@@ -39,6 +42,9 @@ public class MenuSesionService implements IMenuSesionService {
                 new Cliente().eliminarCuenta();
                 break;
             case 6:
+                new CuentaAhorro().calcularTNA();
+                break;
+            case 7:
                 this.cerrarSesion();
                 break;
             case 0:

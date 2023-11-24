@@ -1,13 +1,19 @@
 package org.informatorio.domain;
 
-public class CuentaAhorro extends Cuenta {
-    private double TAN;
+import org.informatorio.service.cuenta.CuentaService;
 
-    public double getTAN() {
-        return TAN;
+public class CuentaAhorro extends Cuenta {
+    private double TNA = 10;
+
+    public double getTNA() {
+        return TNA;
     }
 
-    public void setTAN(double TAN) {
-        this.TAN = TAN;
+    public void setTNA(double TNA) {
+        this.TNA = TNA;
+    }
+
+    public void calcularTNA() {
+        new CuentaService().calcularTNA();
     }
 }
