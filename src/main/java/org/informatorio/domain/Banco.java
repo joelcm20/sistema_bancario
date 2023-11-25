@@ -35,6 +35,9 @@ public class Banco {
         this.clienteConectado = clienteConectado;
     }
 
+    public Banco() {
+    }
+
     public Banco(String nombre) {
         this.nombre = nombre;
     }
@@ -44,5 +47,6 @@ public class Banco {
     }
 
     public void abrirCuenta() {
+        new Cliente().agregarCuenta();
     }
 }
