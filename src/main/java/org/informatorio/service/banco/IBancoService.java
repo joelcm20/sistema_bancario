@@ -13,4 +13,6 @@ public interface IBancoService {
     Boolean usuarioYaRegistrado(String usuario);
 
     void validarCuenta(Cuenta cuenta);
+
+    void exportarCuentasACSV();
 }
