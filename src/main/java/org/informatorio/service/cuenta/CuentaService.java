@@ -1,15 +1,12 @@
 package org.informatorio.service.cuenta;
 
-import com.sun.jdi.IntegerType;
 import org.informatorio.db.DB;
-import org.informatorio.domain.Cliente;
 import org.informatorio.domain.Cuenta;
-import org.informatorio.domain.CuentaAhorro;
 import org.informatorio.domain.CuentaCorriente;
 import org.informatorio.entrada.InputConsoleService;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class CuentaService implements ICuentaService {
@@ -36,9 +33,14 @@ public class CuentaService implements ICuentaService {
             // realizar la tarea en caso de que si exista la cuenta
             System.out.print("Monto a depositar: ");
             double monto = Double.parseDouble(InputConsoleService.getScanner().nextLine());
-            cuentaADepositar.depositarSaldo(monto);
+            this.depositar(cuentaADepositar, monto);
             System.out.println("Monto depositado.\n");
         }
+    }
+
+    @Override
+    public void depositar(Cuenta cuenta, double monto) {
+        cuenta.setSaldo(cuenta.getSaldo() + monto);
     }
 
     @Override
@@ -72,13 +74,13 @@ public class CuentaService implements ICuentaService {
                     System.out.println("Error: sobregiro excedido.\n");
                 } else {
                     // si todo esta bien, remirar el monto
-                    cuentaARetirarSaldo.retirarSaldo(monto);
+                    this.retirar(cuentaARetirarSaldo, monto);
                     System.out.println("Monto retirado.\n");
                 }
             } else {
                 // si la cuenta es de ahorro
                 if (cuentaARetirarSaldo.getSaldo() - monto >= 0) {
-                    cuentaARetirarSaldo.retirarSaldo(monto);
+                    retirar(cuentaARetirarSaldo, monto);
                     System.out.println("Monto retirado.\n");
                 } else {
                     // mostrar por pantalla si el saldo es insuficiente
@@ -87,6 +89,11 @@ public class CuentaService implements ICuentaService {
 
             }
         }
+    }
+
+    @Override
+    public void retirar(Cuenta cuenta, double monto) {
+        cuenta.setSaldo(cuenta.getSaldo() - monto);
     }
 
     @Override
@@ -139,29 +146,35 @@ public class CuentaService implements ICuentaService {
         }
     }
 
-    @Override
-    public void calcularTNA() {
-        CuentaAhorro cuenta = null;
-        // obtener cuenta a calcular tna
-        System.out.print("Alias de la cuenta: ");
-        String alias = InputConsoleService.getScanner().nextLine();
+    public void eliminarCuenta() {
+        Cuenta cuentaAEliminar = null;
+        // obtener alias de la cuenta a eliminar
+        System.out.print("Alias de la cienta a eliminar: ");
+        String alias = InputConsoleService.getScanner().nextLine().trim();
 
-        // buscar cuenta con el alias
+        // verificar si la cuenta existe
+        Boolean existeCuenta = Boolean.FALSE;
         for (Cuenta c : DB.getBanco().getClienteConectado().getCuentas()) {
-            if (alias.equals(c.getAlias()) && c instanceof CuentaAhorro) {
-                cuenta = (CuentaAhorro) c;
+            if (alias.equals(c.getAlias())) {
+                existeCuenta = Boolean.TRUE;
+                cuentaAEliminar = c;
             }
         }
 
-        if (Objects.isNull(cuenta)) {
+        // mostrar por pantalla si la cuenta a eliminar no existe
+        if (Objects.isNull(cuentaAEliminar)) {
             System.out.println("Error: la cuenta no existe o no fue encontrada.\n");
         } else {
-            double tasaDiaria = cuenta.getTNA() / 365;
-            long diasTranscurridos = ChronoUnit.DAYS.between(cuenta.getFechaApertura(), LocalDate.now());
-
-            double saldoFinal = cuenta.getSaldo() * Math.pow(1 + tasaDiaria, diasTranscurridos);
-            double interesesGenerados = saldoFinal - cuenta.getSaldo();
-            System.out.printf("Intereses generados %s.\n\n", interesesGenerados);
+            // eliminar la cuenta si existe
+            List<Cuenta> nuevaListaCuentas = new ArrayList<>();
+            for (Cuenta c : DB.getBanco().getClienteConectado().getCuentas()) {
+                if (!c.getAlias().equals(cuentaAEliminar.getAlias())) {
+                    nuevaListaCuentas.add(c);
+                }
+            }
+            // guardar la nueva lista de cuentas al cliente conectado
+            DB.getBanco().getClienteConectado().setCuentas(nuevaListaCuentas);
+            System.out.println("Cuenta eliminada.\n");
         }
     }
 }

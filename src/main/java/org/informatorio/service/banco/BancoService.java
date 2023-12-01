@@ -1,95 +1,78 @@
 package org.informatorio.service.banco;
 
-import com.opencsv.CSVWriter;
 import org.informatorio.db.DB;
-import org.informatorio.domain.Cliente;
-import org.informatorio.domain.Cuenta;
-import org.informatorio.domain.CuentaCorriente;
+import org.informatorio.domain.*;
+import org.informatorio.entrada.InputConsoleService;
+import org.informatorio.service.cuenta.ICuentaService;
+import org.informatorio.utils.GenerarNumeroCuenta;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 public class BancoService implements IBancoService {
     @Override
     public void registrarCliente(Cliente cliente) {
-        DB.getBanco().agregarCliente(cliente);
+        Banco banco = DB.getBanco();
+        List<Cliente> clientes = banco.getClientes();
+        clientes.add(cliente);
+        banco.setClientes(clientes);
     }
 
     @Override
-    public Optional<Cliente> buscarClientePorCredenciales(String usuario, String contrasena) {
-        for (Cliente cliente : DB.getBanco().getClientes()) {
-            if (cliente.getUsuario().equals(usuario) && cliente.getContrasena().equals(contrasena)) {
-                return Optional.of(cliente);
+    public void abrirCuenta() {
+        Cuenta cuenta = null;
+        int tipoDeCuenta = 0;
+        Boolean ok;
+
+        // crear tipo de cuenta
+        ok = Boolean.FALSE;
+        do {
+            try {
+                System.out.println("Seleccionar tipo de cuenta:\n1. Cuenta ahorro.\n2. Cuenta corriente.");
+                System.out.print("Seleccionar tipo: ");
+                tipoDeCuenta = Integer.parseInt(InputConsoleService.getScanner().nextLine());
+                ok = Boolean.FALSE;
+            } catch (NumberFormatException e) {
+                ok = Boolean.TRUE;
+                System.out.println("Error: formato invalido.\n");
             }
-        }
-        return Optional.empty();
-    }
+        } while (ok);
 
-    @Override
-    public Boolean usuarioYaRegistrado(String usuario) {
-        for (Cliente c : DB.getBanco().getClientes()) {
-            if (c.getUsuario().equals(usuario)) {
-                return Boolean.TRUE;
+        ok = Boolean.FALSE;
+        do {
+            if (tipoDeCuenta == 1) {
+                ok = Boolean.FALSE;
+                cuenta = new CuentaAhorro();
+            } else if (tipoDeCuenta == 2) {
+                ok = Boolean.FALSE;
+                cuenta = new CuentaCorriente();
+            } else {
+                ok = Boolean.TRUE;
+                System.out.println("Error: tipo de cuenta invalido.\n");
             }
-        }
-        return Boolean.FALSE;
-    }
+        } while (ok);
 
-    @Override
-    public void validarCuenta(Cuenta cuenta) {
-        boolean clienteExiste = Boolean.FALSE;
-        for (Cliente c : DB.getBanco().getClientes()) {
-            if (c.equals(cuenta.getTitular())) {
-                clienteExiste = Boolean.TRUE;
-                break;
+        // crear numero de cuenta
+        long numeroDeCuenta = GenerarNumeroCuenta.numeroCuentaBancaria();
+        cuenta.setNumeroCuenta(numeroDeCuenta);
+
+        // agregar el titular de la cuenta (el cliente conectado)
+        cuenta.setTitular(DB.getBanco().getClienteConectado());
+
+        // crear alias
+        ok = Boolean.FALSE;
+        do {
+            System.out.print("Escribe un alias: ");
+            String alias = InputConsoleService.getScanner().nextLine().trim();
+            // validar alias
+            if (!ICuentaService.validarAlias(alias)) {
+                ok = Boolean.TRUE;
+                System.out.println("Error: alias invalido.\n");
+            } else {
+                ok = Boolean.FALSE;
+                cuenta.setAlias(alias);
+                DB.getBanco().getClienteConectado().setCuenta(cuenta);
+                System.out.println("Cuenta creada correctamente.\n");
             }
-        }
-        if (!clienteExiste) {
-            System.out.println("Error al abrir cuenta, cliente no encontrado.");
-        }
-    }
-
-    @Override
-    public void exportarCuentasACSV() {
-        String[] header = {"Numero", "Titular", "Saldo", "Tipo"};
-        String ruta = "./cuentas.csv"; // raiz del proyecto
-
-        try (CSVWriter writer = new CSVWriter(new FileWriter(ruta))) {
-            writer.writeNext(header);
-            List<Cuenta> listaDeCuentas = new ArrayList<>();
-
-            // obtener todas las cuentas de todos los clientes
-            for (Cliente cliente : DB.getBanco().getClientes()) {
-                for (Cuenta cuenta : cliente.getCuentas()) {
-                    listaDeCuentas.add(cuenta);
-                }
-            }
-
-            // ordenar por numero
-            Comparator<Cuenta> ordenarPorNumeroCuenta = Comparator.comparing(Cuenta::getNumeroCuenta);
-            listaDeCuentas.sort(ordenarPorNumeroCuenta);
-
-            // ordenar por saldo
-            Comparator<Cuenta> ordenarPorSaldo = Comparator.comparing(Cuenta::getSaldo);
-            listaDeCuentas.sort(ordenarPorSaldo);
-
-            // guardar cuentas en un csv
-            for (Cuenta cuenta : listaDeCuentas) {
-                long numeroCuenta = cuenta.getNumeroCuenta();
-                String titular = cuenta.getTitular().getNombre();
-                double saldo = cuenta.getSaldo();
-                String tipoCuenta = "ahorro";
-                if (cuenta instanceof CuentaCorriente) tipoCuenta = "corriente";
-                String[] fila = {String.valueOf(numeroCuenta), titular, String.valueOf(saldo), tipoCuenta};
-                writer.writeNext(fila);
-            }
-            System.out.println("Cuentas exportadas (ruta: raiz del proyecto).\n");
-        } catch (IOException e) {
-            System.out.printf("Error: %s", e.getMessage());
-        }
+        } while (ok);
     }
 }

@@ -7,7 +7,11 @@ import org.informatorio.domain.Cuenta;
 public interface ICuentaService {
     void depositarSaldo();
 
+    void depositar(Cuenta cuenta, double monto);
+
     void retirarSaldo();
+
+    void retirar(Cuenta cuenta, double monto);
 
     void consultarSaldo();
 
@@ -24,5 +28,5 @@ public interface ICuentaService {
         return esValido;
     }
 
-    void calcularTNA();
+    void eliminarCuenta();
 }

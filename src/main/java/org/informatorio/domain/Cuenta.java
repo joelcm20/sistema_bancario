@@ -11,18 +11,6 @@ public abstract class Cuenta {
     private String alias;
     private double saldo;
 
-    public void depositarSaldo(double monto) {
-        this.saldo = this.saldo + monto;
-    }
-
-    public void retirarSaldo(double monto) {
-        this.saldo = this.saldo - monto;
-    }
-
-    public void consultarSaldo() {
-        System.out.printf("Saldo: %s.\n", this.saldo);
-    }
-
     public UUID getId() {
         return id;
     }

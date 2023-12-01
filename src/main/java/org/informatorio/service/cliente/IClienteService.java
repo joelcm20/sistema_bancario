@@ -1,11 +1,15 @@
 package org.informatorio.service.cliente;
 
+import org.informatorio.domain.Cliente;
+
+import java.util.Optional;
+
 public interface IClienteService {
     void registrarme();
 
     void iniciarSesion();
 
-    void agregarCuenta();
+    Boolean usuarioYaRegistrado(String usuario);
 
-    void eliminarCuenta();
+    Optional<Cliente> buscarClientePorCredenciales(String usuario, String contrasena);
 }

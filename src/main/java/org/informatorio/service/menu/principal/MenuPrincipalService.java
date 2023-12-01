@@ -3,7 +3,8 @@ package org.informatorio.service.menu.principal;
 import org.informatorio.db.DB;
 import org.informatorio.domain.Cliente;
 import org.informatorio.entrada.InputConsoleService;
-import org.informatorio.service.banco.BancoService;
+import org.informatorio.service.archivo.ArchivoService;
+import org.informatorio.service.cliente.ClienteService;
 import org.informatorio.service.menu.sesion.MenuSesionService;
 
 import java.util.Objects;
@@ -61,13 +62,13 @@ public class MenuPrincipalService implements IMenuPrincipalService {
     public void realizarTareaMenuPrincipal(int opcion) {
         switch (opcion) {
             case 1:
-                Cliente.registrarme();
+                new ClienteService().registrarme();
                 break;
             case 2:
-                Cliente.iniciarSesion();
+                new ClienteService().iniciarSesion();
                 break;
             case 3:
-                new BancoService().exportarCuentasACSV();
+                new ArchivoService().exportarCuentasACSV();
                 break;
             case 0:
                 System.out.println("Adios.\n");

@@ -1,11 +1,10 @@
 package org.informatorio.service.menu.sesion;
 
 import org.informatorio.db.DB;
-import org.informatorio.domain.Banco;
 import org.informatorio.domain.Cliente;
-import org.informatorio.domain.Cuenta;
-import org.informatorio.domain.CuentaAhorro;
-import org.informatorio.service.menu.principal.MenuPrincipalService;
+import org.informatorio.service.banco.BancoService;
+import org.informatorio.service.cuenta.CuentaAhorroService;
+import org.informatorio.service.cuenta.CuentaService;
 
 public class MenuSesionService implements IMenuSesionService {
     @Override
@@ -28,22 +27,22 @@ public class MenuSesionService implements IMenuSesionService {
     public void realizarTareaMenuSesion(int opcion) {
         switch (opcion) {
             case 1:
-                new Cliente().depositarSaldo();
+                new CuentaService().depositarSaldo();
                 break;
             case 2:
-                new Cliente().retirarSaldo();
+                new CuentaService().retirarSaldo();
                 break;
             case 3:
-                new Cliente().consultarSaldo();
+                new CuentaService().consultarSaldo();
                 break;
             case 4:
-                new Banco().abrirCuenta();
+                new BancoService().abrirCuenta();
                 break;
             case 5:
-                new Cliente().eliminarCuenta();
+                new CuentaService().eliminarCuenta();
                 break;
             case 6:
-                new CuentaAhorro().calcularTNA();
+                new CuentaAhorroService().calcularTNA();
                 break;
             case 7:
                 this.cerrarSesion();

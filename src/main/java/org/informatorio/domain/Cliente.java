@@ -1,8 +1,5 @@
 package org.informatorio.domain;
 
-import org.informatorio.service.cliente.ClienteService;
-import org.informatorio.service.cuenta.CuentaService;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -65,33 +62,5 @@ public class Cliente {
 
     public void setCuenta(Cuenta cuenta) {
         this.cuentas.add(cuenta);
-    }
-
-    public void agregarCuenta() {
-        new ClienteService().agregarCuenta();
-    }
-
-    public void eliminarCuenta() {
-        new ClienteService().eliminarCuenta();
-    }
-
-    public static void registrarme() {
-        new ClienteService().registrarme();
-    }
-
-    public static void iniciarSesion() {
-        new ClienteService().iniciarSesion();
-    }
-
-    public void depositarSaldo() {
-        new CuentaService().depositarSaldo();
-    }
-
-    public void consultarSaldo() {
-        new CuentaService().consultarSaldo();
-    }
-
-    public void retirarSaldo() {
-        new CuentaService().retirarSaldo();
     }
 }

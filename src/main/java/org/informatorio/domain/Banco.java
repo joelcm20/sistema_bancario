@@ -1,7 +1,5 @@
 package org.informatorio.domain;
 
-import org.informatorio.db.DB;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,13 +38,5 @@ public class Banco {
 
     public Banco(String nombre) {
         this.nombre = nombre;
-    }
-
-    public void agregarCliente(Cliente cliente) {
-        this.clientes.add(cliente);
-    }
-
-    public void abrirCuenta() {
-        new Cliente().agregarCuenta();
     }
 }

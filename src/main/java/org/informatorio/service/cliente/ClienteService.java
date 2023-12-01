@@ -4,13 +4,7 @@ import org.informatorio.db.DB;
 import org.informatorio.domain.*;
 import org.informatorio.entrada.InputConsoleService;
 import org.informatorio.service.banco.BancoService;
-import org.informatorio.service.cuenta.CuentaService;
-import org.informatorio.service.cuenta.ICuentaService;
-import org.informatorio.utils.GenerarNumeroCuenta;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public class ClienteService implements IClienteService {
@@ -30,7 +24,7 @@ public class ClienteService implements IClienteService {
             System.out.print("- Nombre de usuario: ");
             cliente.setUsuario(InputConsoleService.getScanner().nextLine());
             // validar si el usuario ya existe
-            if (new BancoService().usuarioYaRegistrado(cliente.getUsuario())) {
+            if (this.usuarioYaRegistrado(cliente.getUsuario())) {
                 System.out.println("Error: el usuario ya exixte. Elige otro.");
                 ok = Boolean.TRUE;
             } else {
@@ -100,7 +94,7 @@ public class ClienteService implements IClienteService {
         String contrasena = InputConsoleService.getScanner().nextLine();
 
         // buscar cliente por sus credenciales
-        Optional<Cliente> cliente = new BancoService().buscarClientePorCredenciales(nombreUsuario, contrasena);
+        Optional<Cliente> cliente = this.buscarClientePorCredenciales(nombreUsuario, contrasena);
 
         // gestionar en caso de que el cliente no exista
         if (cliente.isEmpty()) {
@@ -112,95 +106,21 @@ public class ClienteService implements IClienteService {
         }
     }
 
-    @Override
-    public void agregarCuenta() {
-        Cuenta cuenta = null;
-        int tipoDeCuenta = 0;
-        Boolean ok;
-
-        // crear tipo de cuenta
-        ok = Boolean.FALSE;
-        do {
-            try {
-                System.out.println("Seleccionar tipo de cuenta:\n1. Cuenta ahorro.\n2. Cuenta corriente.");
-                System.out.print("Seleccionar tipo: ");
-                tipoDeCuenta = Integer.parseInt(InputConsoleService.getScanner().nextLine());
-                ok = Boolean.FALSE;
-            } catch (NumberFormatException e) {
-                ok = Boolean.TRUE;
-                System.out.println("Error: formato invalido.\n");
+    public Optional<Cliente> buscarClientePorCredenciales(String usuario, String contrasena) {
+        for (Cliente cliente : DB.getBanco().getClientes()) {
+            if (cliente.getUsuario().equals(usuario) && cliente.getContrasena().equals(contrasena)) {
+                return Optional.of(cliente);
             }
-        } while (ok);
-
-        ok = Boolean.FALSE;
-        do {
-            if (tipoDeCuenta == 1) {
-                ok = Boolean.FALSE;
-                cuenta = new CuentaAhorro();
-            } else if (tipoDeCuenta == 2) {
-                ok = Boolean.FALSE;
-                cuenta = new CuentaCorriente();
-            } else {
-                ok = Boolean.TRUE;
-                System.out.println("Error: tipo de cuenta invalido.\n");
-            }
-        } while (ok);
-
-        // crear numero de cuenta
-        long numeroDeCuenta = GenerarNumeroCuenta.numeroCuentaBancaria();
-        cuenta.setNumeroCuenta(numeroDeCuenta);
-
-        // agregar el titular de la cuenta (el cliente conectado)
-        cuenta.setTitular(DB.getBanco().getClienteConectado());
-
-        // crear alias
-        ok = Boolean.FALSE;
-        do {
-            System.out.print("Escribe un alias: ");
-            String alias = InputConsoleService.getScanner().nextLine().trim();
-            // validar alias
-            if (!ICuentaService.validarAlias(alias)) {
-                ok = Boolean.TRUE;
-                System.out.println("Error: alias invalido.\n");
-            } else {
-                ok = Boolean.FALSE;
-                cuenta.setAlias(alias);
-                DB.getBanco().getClienteConectado().setCuenta(cuenta);
-                System.out.println("Cuenta creada correctamente.\n");
-            }
-        } while (ok);
+        }
+        return Optional.empty();
     }
 
-    @Override
-    public void eliminarCuenta() {
-        Cuenta cuentaAEliminar = null;
-        // obtener alias de la cuenta a eliminar
-        System.out.print("Alias de la cienta a eliminar: ");
-        String alias = InputConsoleService.getScanner().nextLine().trim();
-
-        // verificar si la cuenta existe
-        Boolean existeCuenta = Boolean.FALSE;
-        for (Cuenta c : DB.getBanco().getClienteConectado().getCuentas()) {
-            if (alias.equals(c.getAlias())) {
-                existeCuenta = Boolean.TRUE;
-                cuentaAEliminar = c;
+    public Boolean usuarioYaRegistrado(String usuario) {
+        for (Cliente c : DB.getBanco().getClientes()) {
+            if (c.getUsuario().equals(usuario)) {
+                return Boolean.TRUE;
             }
         }
-
-        // mostrar por pantalla si la cuenta a eliminar no existe
-        if (Objects.isNull(cuentaAEliminar)) {
-            System.out.println("Error: la cuenta no existe o no fue encontrada.\n");
-        } else {
-            // eliminar la cuenta si existe
-            List<Cuenta> nuevaListaCuentas = new ArrayList<>();
-            for (Cuenta c : DB.getBanco().getClienteConectado().getCuentas()) {
-                if (!c.getAlias().equals(cuentaAEliminar.getAlias())) {
-                    nuevaListaCuentas.add(c);
-                }
-            }
-            // guardar la nueva lista de cuentas al cliente conectado
-            DB.getBanco().getClienteConectado().setCuentas(nuevaListaCuentas);
-            System.out.println("Cuenta eliminada.\n");
-        }
+        return Boolean.FALSE;
     }
 }
