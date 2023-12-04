@@ -179,7 +179,6 @@ public class CuentaService implements ICuentaService {
     public void abrirCuenta() {
         Cuenta cuenta;
         int tipoDeCuenta;
-        Boolean ok;
 
         // solicitar tipo de cuenta
         tipoDeCuenta = this.solicitarTipoDeCuentaACrear();
