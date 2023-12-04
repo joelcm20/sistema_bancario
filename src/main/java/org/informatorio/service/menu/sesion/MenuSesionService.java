@@ -2,7 +2,6 @@ package org.informatorio.service.menu.sesion;
 
 import org.informatorio.db.DB;
 import org.informatorio.domain.Cliente;
-import org.informatorio.service.banco.BancoService;
 import org.informatorio.service.cuenta.CuentaAhorroService;
 import org.informatorio.service.cuenta.CuentaService;
 
@@ -36,7 +35,7 @@ public class MenuSesionService implements IMenuSesionService {
                 new CuentaService().consultarSaldo();
                 break;
             case 4:
-                new BancoService().abrirCuenta();
+                new CuentaService().abrirCuenta();
                 break;
             case 5:
                 new CuentaService().eliminarCuenta();

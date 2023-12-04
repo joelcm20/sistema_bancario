@@ -29,4 +29,6 @@ public interface ICuentaService {
     }
 
     void eliminarCuenta();
+
+    void abrirCuenta();
 }

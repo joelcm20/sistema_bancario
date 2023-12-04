@@ -12,17 +12,8 @@ import java.util.Objects;
 public class CuentaAhorroService implements ICuentaAhorroService {
     @Override
     public void calcularTNA() {
-        CuentaAhorro cuenta = null;
         // obtener cuenta a calcular tna
-        System.out.print("Alias de la cuenta: ");
-        String alias = InputConsoleService.getScanner().nextLine();
-
-        // buscar cuenta con el alias
-        for (Cuenta c : DB.getBanco().getClienteConectado().getCuentas()) {
-            if (alias.equals(c.getAlias()) && c instanceof CuentaAhorro) {
-                cuenta = (CuentaAhorro) c;
-            }
-        }
+        CuentaAhorro cuenta = this.seleccionarCuenta();
 
         if (Objects.isNull(cuenta)) {
             System.out.println("Error: la cuenta no existe o no fue encontrada.\n");
@@ -34,5 +25,20 @@ public class CuentaAhorroService implements ICuentaAhorroService {
             double interesesGenerados = saldoFinal - cuenta.getSaldo();
             System.out.printf("Intereses generados %s.\n\n", interesesGenerados);
         }
+    }
+
+    private CuentaAhorro seleccionarCuenta() {
+        CuentaAhorro cuenta = null;
+        System.out.print("Alias de la cuenta: ");
+        String alias = InputConsoleService.getScanner().nextLine().trim();
+
+        // buscar cuenta con el alias
+        for (Cuenta c : DB.getBanco().getClienteConectado().getCuentas()) {
+            if (alias.equals(c.getAlias()) && c instanceof CuentaAhorro) {
+                cuenta = (CuentaAhorro) c;
+                break;
+            }
+        }
+        return cuenta;
     }
 }

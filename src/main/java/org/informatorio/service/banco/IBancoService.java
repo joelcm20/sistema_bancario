@@ -4,6 +4,4 @@ import org.informatorio.domain.Cliente;
 
 public interface IBancoService {
     void registrarCliente(Cliente cliente);
-
-    void abrirCuenta();
 }

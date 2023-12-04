@@ -62,7 +62,7 @@ public class MenuPrincipalService implements IMenuPrincipalService {
     public void realizarTareaMenuPrincipal(int opcion) {
         switch (opcion) {
             case 1:
-                new ClienteService().registrarme();
+                new ClienteService().registrarCliente();
                 break;
             case 2:
                 new ClienteService().iniciarSesion();
