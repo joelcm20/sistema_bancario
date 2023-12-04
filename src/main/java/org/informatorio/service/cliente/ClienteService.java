@@ -12,7 +12,6 @@ public class ClienteService implements IClienteService {
     public void registrarCliente() {
         Cliente cliente = new Cliente();
         Direccion direccion = new Direccion();
-        Boolean ok;
 
         // crear nombre
         System.out.print("- Nombre completo: ");
